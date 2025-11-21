@@ -74,13 +74,12 @@ def train_and_log_model(X_train, X_test, y_train, y_test, vectorizer):
     
     param_grid = {
         "C": [0.1, 1, 10],
-        "penalty": ["l1", "l2"],
-        "solver": ["liblinear", "saga"],
+        "solver": ["liblinear","lbfgs","saga",],
         "class_weight": [None, "balanced"]
     }
     
     with mlflow.start_run():
-        grid_search = GridSearchCV(LogisticRegression(max_iter=1000), param_grid, cv=5, scoring="f1", n_jobs=-1)
+        grid_search = GridSearchCV(LogisticRegression(max_iter=1000, random_state=42), param_grid, cv=5, scoring="f1", n_jobs=-1)
         grid_search.fit(X_train, y_train)
 
         # Log all hyperparameter tuning runs
