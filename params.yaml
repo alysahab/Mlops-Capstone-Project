@@ -10,6 +10,6 @@ model_training:
   C: 10
   max_iter: 1000
   random_state: 42
-  penalty: 'l1'
+  penalty: 'l2'
   solver: 'saga'
   class_weight: 'balanced'
