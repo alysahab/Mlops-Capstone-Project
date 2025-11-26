@@ -73,9 +73,17 @@ def main():
         params = load_params(params_path='params.yaml')
         test_size = params['data_ingestion']['test_size']
         # test_size = 0.2
+    except Exception as e:
+        logging.error('Failed to load parameters: %s', e)
+        return
         
-        # df = load_data(data_url='https://raw.githubusercontent.com/vikashishere/Datasets/refs/heads/main/data.csv')
-        s3 = s3_connection.s3_operations("s3-bucket-capstone-proj")
+    try:    
+        access_key = os.getenv("AWS_ACCESS_KEY_ID")
+        secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+        if not access_key or not secret_key:
+            raise EnvironmentError("AWS credentials are not set in environment variables")
+
+        s3 = s3_connection.s3_operations("s3-bucket-capstone-proj", access_key, secret_key)
         df = s3.fetch_file_from_s3("IMDB.csv")
 
 
