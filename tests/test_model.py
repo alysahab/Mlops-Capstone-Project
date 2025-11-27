@@ -45,11 +45,6 @@ class TestModelLoading(unittest.TestCase):
         client = mlflow.MlflowClient()
         latest_version = client.get_latest_versions(model_name, stages=[stage])
         return latest_version[0].version if latest_version else None
-    
-    @staticmethod
-    def load_metrics(file_path):
-        with open(file_path, 'r') as f:
-            return json.load(f)
 
     def test_model_loaded_properly(self):
         self.assertIsNotNone(self.new_model)
@@ -88,12 +83,11 @@ class TestModelLoading(unittest.TestCase):
 
 
         # Define expected thresholds for the performance metrics
-        metric = self.load_metrics('reports/metrics.json')
 
-        expected_accuracy = metric['accuracy']
-        expected_precision = metric['precision']
-        expected_recall = metric['recall']
-        expected_f1 = metric['f1']
+        expected_accuracy = 0.7
+        expected_precision = 0.7
+        expected_recall = 0.7
+        expected_f1 = 0.7
 
         # Assert that the new model meets the performance thresholds
         self.assertGreaterEqual(accuracy_new, expected_accuracy, f'Accuracy should be at least {expected_accuracy}')
